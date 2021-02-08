@@ -14,9 +14,9 @@ done
 for index in ${ARRAY_OF_ALL_ALERTS[@]}
 do
 
-	echo curl -u $OWNER:$ACCESS_TOKEN -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index"
+	echo curl -u "$OWNER":"$ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index"
 
-	ALERT_PATH=$(curl -u $OWNER:$ACCESS_TOKEN -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index" | jq .instances[0].location.path)
+	ALERT_PATH=$(curl -u "$OWNER":"$ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index" | jq .instances[0].location.path)
 
 	echo $ALERT_PATH
 
@@ -24,7 +24,7 @@ do
 
 		ALERT_URL="https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index"
 
-		curl -u $OWNER:$ACCESS_TOKEN -X PATCH -H "Accept: application/vnd.github.v3+json" $ALERT_URL -d '{"state":"dismissed","dismissed_reason":"'"$DISMISS_REASON"'"}'
+		curl -u "$OWNER":"$ACCESS_TOKEN" -X PATCH -H "Accept: application/vnd.github.v3+json" $ALERT_URL -d '{"state":"dismissed","dismissed_reason":"'"$DISMISS_REASON"'"}'
 
 		echo Alert \#$index is at "$ALERT_DIS_PATH"
 
