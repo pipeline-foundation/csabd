@@ -16,9 +16,9 @@ do
 
 	echo curl -u $OWNER:$ACCESS_TOKEN -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index"
 
-	echo $(curl -u $OWNER:$ACCESS_TOKEN -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index" | jq .instances[0].location.path)
-
 	ALERT_PATH=$(curl -u $OWNER:$ACCESS_TOKEN -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index" | jq .instances[0].location.path)
+
+	echo $ALERT_PATH
 
 	if [[ "$ALERT_PATH" == *"$ALERT_DIS_PATH"* ]]; then
 
