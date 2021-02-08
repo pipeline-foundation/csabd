@@ -16,21 +16,23 @@ echo ${ARRAY_OF_ALL_ALERTS[@]}
 for index in ${ARRAY_OF_ALL_ALERTS[@]}
 do
 
-	echo curl -u "$OWNER":"$ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index"
+	echo $index
 
-	ALERT_PATH=$(curl -u "$OWNER":"$ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index" | jq .instances[0].location.path)
+	# echo curl -u "$OWNER":"$ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index"
 
-	echo $ALERT_PATH
+	# ALERT_PATH=$(curl -u "$OWNER":"$ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index" | jq .instances[0].location.path)
 
-	if [[ "$ALERT_PATH" == *"$ALERT_DIS_PATH"* ]]; then
+	# echo $ALERT_PATH
 
-		ALERT_URL="https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index"
+	# if [[ "$ALERT_PATH" == *"$ALERT_DIS_PATH"* ]]; then
 
-		curl -u "$OWNER":"$ACCESS_TOKEN" -X PATCH -H "Accept: application/vnd.github.v3+json" $ALERT_URL -d '{"state":"dismissed","dismissed_reason":"'"$DISMISS_REASON"'"}'
+	# 	ALERT_URL="https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$index"
 
-		echo Alert \#$index is at "$ALERT_DIS_PATH"
+	# 	curl -u "$OWNER":"$ACCESS_TOKEN" -X PATCH -H "Accept: application/vnd.github.v3+json" $ALERT_URL -d '{"state":"dismissed","dismissed_reason":"'"$DISMISS_REASON"'"}'
 
-	else
-		echo Alert \#$index is not at "$ALERT_DIS_PATH"
-	fi
+	# 	echo Alert \#$index is at "$ALERT_DIS_PATH"
+
+	# else
+	# 	echo Alert \#$index is not at "$ALERT_DIS_PATH"
+	# fi
 done
