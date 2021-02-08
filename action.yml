@@ -25,7 +25,7 @@ runs:
   using: 'composite'
   steps:
     - name: Run tool's script
-      run: ${{ github.action_path }}/csabd.sh
+      run: $GITHUB_ACTION_PATH/csabd.sh
       shell: bash
       env:
         OWNER: '${{ inputs.repo_owner }}'
