@@ -1,0 +1,36 @@
+name: 'Code scanning alerts bulk dismissal'
+description: 'Dismiss a large amount of code scanning alerts'
+inputs:
+  repo_owner:
+    description: 'Verbatim the owner of the repo'
+    required: true
+    default: ''
+  project_name:
+    description: 'Verbatim the name of the repo'
+    required: true
+    default: ''
+  token:
+    description: 'A token for security_events read/write only'
+    required: true
+    default: ''
+  dismiss_reason:
+    description: 'Reason for dismissing the alert. Can be "false positive", "won''t fix" or "used in tests"'
+    required: true
+    default: 'false positive'
+  alerts_dis_path:
+    description: 'A folder or file that is the source of the alerts. Doesn''t require a full path, just the lowest common denominator.'
+    required: true
+    default: ''
+runs:
+  using: 'composite'
+  steps:
+    - name: Run tool's script
+      run: ${{ github.action_path }}/csabd.sh
+      shell: bash
+      env:
+        OWNER: ${{ inputs.repo_owner }} # verbatim from URL
+        PROJECT_NAME: ${{ inputs.project_name }} # verbatim from URL
+        ACCESS_TOKEN: ${{ inputs.token }} # requires security_events read/write permissions
+        DISMISS_REASON: ${{ inputs.dismiss_reason }} # "false positive", "won't fix" or "used in tests".
+        ALERTS_PER_PAGE: '50'
+        ALERT_DIS_PATH: ${{ inputs.alerts_dis_path }}
