@@ -24,22 +24,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - run: |
-        echo $OWNER
-        echo $PROJECT_NAME
-        echo $ACCESS_TOKEN
-        echo $DISMISS_REASON
-        echo $ALERTS_PER_PAGE
-        echo $ALERT_DIS_PATH
-      shell: bash
-      env:
-        OWNER: '${{ inputs.repo_owner }}'
-        PROJECT_NAME: '${{ inputs.project_name }}'
-        ACCESS_TOKEN: '${{ inputs.token }}'
-        DISMISS_REASON: '${{ inputs.dismiss_reason }}'
-        ALERTS_PER_PAGE: '50'
-        ALERT_DIS_PATH: '${{ inputs.alerts_dis_path }}'
-
     - name: Run tool's script
       run: $GITHUB_ACTION_PATH/csabd.sh
       shell: bash
