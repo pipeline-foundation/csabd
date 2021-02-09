@@ -11,8 +11,6 @@ do
 	ARRAY_OF_ALERTS_INDEXES=$(curl -u $OWNER:$ACCESS_TOKEN -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts?state=open&page=$PAGE_NUM&per_page=$ALERTS_PER_PAGE"| jq .[].number )
 done
 
-echo $ARRAY_OF_ALL_ALERTS
-
 for index in ${ARRAY_OF_ALL_ALERTS[@]}
 do
 	echo $index
