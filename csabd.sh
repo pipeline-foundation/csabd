@@ -19,7 +19,7 @@ do
 
 	echo $index | sed 's/[^0-9]*//g'
 
-	INDEX_CLEAN = $index | sed 's/[^0-9]*//g'
+	INDEX_CLEAN=$($index | sed 's/[^0-9]*//g')
 
 	echo $INDEX_CLEAN
 
