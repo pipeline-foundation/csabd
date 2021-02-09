@@ -15,8 +15,10 @@ echo $ARRAY_OF_ALL_ALERTS
 
 for index in ${ARRAY_OF_ALL_ALERTS[@]}
 do
+	echo "'"$index"'"
+
 	REGEX_PAT='\d+'
-	[[ $index =~ $REGEX_PAT ]]
+	[[ "'"$index"'" =~ $REGEX_PAT ]]
 
 	echo This is BASH_REMATCH[0]: "${BASH_REMATCH[0]}"
 
