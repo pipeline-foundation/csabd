@@ -15,12 +15,12 @@ echo $ARRAY_OF_ALL_ALERTS
 
 for index in ${ARRAY_OF_ALL_ALERTS[@]}
 do
-	REGEX_PAT='[0-9]*'
+	REGEX_PAT='(\d+)'
 	[[ $index =~ $REGEX_PAT ]]
 
-	echo "${BASH_REMATCH[0]}"
+	echo This is BASH_REMATCH[0]: "${BASH_REMATCH[0]}"
 
-	echo "${BASH_REMATCH[1]}"
+	echo This is BASH_REMATCH[1]: "${BASH_REMATCH[1]}"
 
 	ALERT_PATH=$(curl -u "$OWNER":"$ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/${BASH_REMATCH[1]}" | jq .instances[0].location.path)
 
