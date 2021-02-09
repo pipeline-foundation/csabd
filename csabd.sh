@@ -15,14 +15,6 @@ echo $ARRAY_OF_ALL_ALERTS
 
 for index in ${ARRAY_OF_ALL_ALERTS[@]}
 do
-	echo $index
-
-	echo $index | sed 's/[^0-9]*//g'
-
-	INDEX_CLEAN=`echo $index | sed 's/[^0-9]*//g'`
-
-	echo $INDEX_CLEAN
-
 	ALERT_PATH=$(curl -u "$OWNER":"$ACCESS_TOKEN" -H "Accept: application/vnd.github.v3+json" "https://api.github.com/repos/$OWNER/$PROJECT_NAME/code-scanning/alerts/$INDEX_CLEAN" | jq .instances[0].location.path)
 
 	if [[ "$ALERT_PATH" == *"$ALERT_DIS_PATH"* ]]; then
