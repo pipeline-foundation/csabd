@@ -4,11 +4,11 @@ inputs:
   repo_owner:
     description: 'Verbatim the owner of the repo'
     required: true
-    default: ''
+    default: ${{ github.repository_owner }}
   project_name:
     description: 'Verbatim the name of the repo'
     required: true
-    default: ''
+    default: ${{ github.event.repository.name }}
   token:
     description: 'A token for security_events read/write only'
     required: true
