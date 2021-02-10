@@ -32,5 +32,5 @@ runs:
         PROJECT_NAME: '${{ inputs.project_name }}'
         ACCESS_TOKEN: '${{ inputs.token }}'
         DISMISS_REASON: '${{ inputs.dismiss_reason }}'
-        ALERTS_PER_PAGE: '50'
+        ALERTS_PER_PAGE: '100'
         ALERT_DIS_PATH: '${{ inputs.alerts_dis_path }}'
