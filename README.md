@@ -39,4 +39,4 @@ jobs:
 
 - see [action.yml](action.yml) for the full documentation for this action's inputs and outputs.
 
-- the action is intended to be used in a separate workflow, with the [**workflow_dispatch**](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch) event to [start it manually](https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/), after reviewing the results of the code scanning workflow and determining the source of the alerts
+- the action is intended to be used in an independent workflow, with the [**workflow_dispatch**](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#workflow_dispatch) event to [start it manually](https://github.blog/changelog/2020-07-06-github-actions-manual-triggers-with-workflow_dispatch/), after reviewing the results of the code scanning workflow and determining the source of the alerts
