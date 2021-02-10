@@ -10,15 +10,15 @@ inputs:
     required: true
     default: ${{ github.event.repository.name }}
   token:
-    description: 'A token for security_events read/write only'
+    description: 'The token must have "security_events: read/write" only'
     required: true
     default: ''
   dismiss_reason:
-    description: 'Reason for dismissing the alert. Can be "false positive", "won''t fix" or "used in tests"'
+    description: 'Reason for dismissing the alert. Can be "false positive", "won''t fix" (use with one single quote only) or "used in tests"'
     required: true
     default: 'false positive'
   alerts_dis_path:
-    description: 'A folder or file that is the source of the alerts. Doesn''t require a full path, just the lowest common denominator.'
+    description: 'A folder or file that is the source of the alerts. Doesn''t require a full path, just the lowest common denominator. If many files in a folder or many sub-folders generate alerts, just use the name of their parent folder.'
     required: true
     default: ''
 runs:
