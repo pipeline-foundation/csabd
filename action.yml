@@ -25,11 +25,9 @@ runs:
   using: 'composite'
   steps:
     - name: Run tool's script
+      shell: pwsh
       run: |
-        cd $GITHUB_ACTION_PATH
-        chmod +x csabd.sh
-        ./csabd.sh
-      shell: bash
+        & ./csabd.ps1
       env:
         OWNER: '${{ inputs.repo_owner }}'
         PROJECT_NAME: '${{ inputs.project_name }}'
