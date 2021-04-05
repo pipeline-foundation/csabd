@@ -17,7 +17,7 @@ inputs:
     description: 'Reason for dismissing the alert. Can be "false positive", "won''t fix" (use with one single quote only) or "used in tests"'
     required: true
     default: 'false positive'
-  alerts_dis_path:
+  source:
     description: 'A folder or file that is the source of the alerts. Doesn''t require a full path, just the lowest common denominator. If many files in a folder or many sub-folders generate alerts, just use the name of their parent folder.'
     required: true
     default: ''
@@ -27,11 +27,56 @@ runs:
     - name: Run tool's script
       shell: pwsh
       run: |
-        & ./csabd.ps1
+        # Construct GET/PATCH Header
+          $BASIC_TOKEN = "$env:OWNER:$env:ACCESS_TOKEN"
+          $BASE64_BASIC_TOKEN = [System.Convert]::ToBase64String([char[]]$BASIC_TOKEN)
+          $headers = @{
+            'Authorization' = "Basic {0}" -f $BASE64_BASIC_TOKEN;
+            'Accept'        = 'application/vnd.github.v3+json';
+          }
+        # Construct PATCH Body
+          $body = @{
+            state            = 'dismissed'
+            dismissed_reason = $env:DISMISS_REASON
+          } | ConvertTo-Json
+
+        # Retrieve all alerts and add them to an array
+          $page = 1
+          $get_uri = "https://api.github.com/repos/$env:OWNER/$env:PROJECT_NAME/code-scanning/alerts?state=open&page={0}&per_page=$env:ALERTS_PER_PAGE"
+          function Get-AllAlerts {
+            $array_of_all_alerts = @()
+
+            do {
+              $array_of_alerts_indexes = Invoke-RestMethod -Method GET -Header $headers -URI $($get_uri -f $page)
+                        
+              $array_of_all_alerts += $array_of_alerts_indexes
+              $page++
+            } while ($array_of_alerts_indexes.count -gt 0)
+
+            return $array_of_all_alerts
+          }
+
+        # Go through all alerts and dismiss any that meet the location criteria
+          $all_alerts_arr = Get-AllAlerts
+          $number_of_alert_message = "- There are {0} alerts! -" -f $all_alerts_arr.count
+          $patch_uri = "https://api.github.com/repos/$env:OWNER/$env:PROJECT_NAME/code-scanning/alerts/{0}"
+          $dismiss_paths_arr = $env:ALERT_DIS_PATH.split(',')
+
+          Write-Output "`n`n" $number_of_alert_message "`n`n"
+
+          foreach ($alert in $all_alerts_arr) {
+            foreach ($path in $dismiss_paths_arr) {
+              if ($alert.most_recent_instance.location.path -Match $path) {
+                Invoke-RestMethod -Method PATCH -Header $headers -URI $($patch_uri -f $alert.number) -Body $body | Out-Null
+
+                Write-Output $("Alert #{0} at {1} has been successfully dismissed!" -f $alert.number, $path) "`n"
+              }
+            }
+          }
       env:
         OWNER: '${{ inputs.repo_owner }}'
         PROJECT_NAME: '${{ inputs.project_name }}'
         ACCESS_TOKEN: '${{ inputs.token }}'
         DISMISS_REASON: '${{ inputs.dismiss_reason }}'
         ALERTS_PER_PAGE: '100'
-        ALERT_DIS_PATH: '${{ inputs.alerts_dis_path }}'
+        ALERT_DIS_PATH: '${{ inputs.source }}'
