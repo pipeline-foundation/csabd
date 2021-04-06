@@ -41,10 +41,10 @@ runs:
           } | ConvertTo-Json
 
         # Retrieve all alerts and add them to an array
-          $page = 1
-          $get_uri = "https://api.github.com/repos/$env:OWNER/$env:PROJECT_NAME/code-scanning/alerts?state=open&page={0}&per_page=$env:ALERTS_PER_PAGE"
           function Get-AllAlerts {
+            $page = 1
             $array_of_all_alerts = @()
+            $get_uri = "https://api.github.com/repos/$env:OWNER/$env:PROJECT_NAME/code-scanning/alerts?state=open&page={0}&per_page=$env:ALERTS_PER_PAGE"
 
             do {
               $array_of_alerts_indexes = Invoke-RestMethod -Method GET -Header $headers -URI $($get_uri -f $page)
