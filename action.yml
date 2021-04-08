@@ -1,5 +1,8 @@
 name: 'Code scanning alerts bulk dismissal'
 description: 'Dismiss a large amount of code scanning alerts'
+branding:
+  icon: alert-circle
+  color: blue
 inputs:
   repo_owner:
     description: 'Verbatim the owner of the repo'
